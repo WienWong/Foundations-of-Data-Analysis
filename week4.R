@@ -241,8 +241,8 @@ W <- 12+34+30+24
 M <- 35+25+32.5+7.5
 
 # What is the probability that a randomly chosen person from the survey prefers Action films?
-(12+35)/200
+(12+35)/130
 
 # What is P(Action|Women)?
-0.12/0.50
+0.12           # 0.12/0.50
 
