@@ -43,3 +43,12 @@ hist(table(IntakeDog))
 # 4c. What proportion of adults sleep between 5.38 and 8.79 hours of sleep? 
 pnorm(8.79,6.7,1.1) - pnorm(5.38,6.7,1.1)
 # [1] 0.8562138
+
+# Week 2 Comprehension Check
+# Twelve coworkers log their hours worked overtime in the past month:
+y <- c(10,2,6,12,14,15,15,24,15,25,3,12)
+mean <- sum(y)/length(y)
+sqrt ( sum((y - mean)^2)/length(y) ) # <-- Discrete random variable of Wikipedia
+# [1] 6.820618
+sd(y)
+# [1] 7.123903
