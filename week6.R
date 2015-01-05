@@ -28,7 +28,7 @@ logisticFitPred(time, mv, 12)
 world <- WorldBankData 
 
 # What is the first "Low Income" country in the dataset?
-world[world$IncomeGroup == 'Low income', ]
+head(world[world$IncomeGroup == 'Low income', ], 10)
 # Afghanistan
 
 # What was the rural population of Aruba in 1970 (report without commas)?
@@ -36,7 +36,8 @@ world[world$Country == 'Aruba' & world$year == 1970, ]
 # 29164
 
 # When was the first year Australia had data on the number of mobile device subscriptions? (Subscriptions more than 0)
-which(world$Country == 'Australia' & world$mobile.users > 0)
+yr <- which(world$Country == 'Australia' & world$mobile.users > 0) 
+world[yr[1], ]
 # 1987
 
 
@@ -47,7 +48,7 @@ us <- world[world$Country.Code == "USA", ]
 us_select <- us[us$year >= 1990, ]
 
 # Make the number of users more interpretable (into millions)
-us_select$internet.mil <- us_select$internet.users / 1000000
+us_select$internet.mil <- us_select$internet.users / 1e6
 
 # Create a new variable that is "years since 1990"
 us_select$time <- us_select$year - 1990
