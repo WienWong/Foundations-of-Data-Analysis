@@ -130,15 +130,14 @@ t4 + 1990
 # Create a subset of the world bank data that contains records from Brazil 1995 and later.
 Brazil <- world[world$Country == 'Brazil' & world$year >= 1995, ]
 
-# Change the year variable to be "years since 1995" and update the units of the "mobile.users" variable to millions of users. 
-tyr <- Brazil$year -1995
+# Change the year variable to be "years since 1995" and update the units of the "mobile.users" variable to millions of users.
+tyr <- Brazil$year - 1995
 
-users <- Brazil$mobile.users / 1000000
+users <- Brazil$mobile.users / 1e6
 
 # Find the number of mobile users in Brazil (in millions) in 2000
-users
 users[1]
-users[6]
+users[2000 - 1995 + 1]
 # 23.19
 
 # In what year did Brazil first record more than 100 million mobile users?
@@ -147,22 +146,124 @@ tyr[users > 100] + 1995
 # Which model best describes the increase in mobile users in Brazil since 1995?
 tripleFit(tyr, users,xlab='Time (yr)',ylab='Mobile User per Million')
 
-#
+# What proportion of the variation in mobile users is explained by years since 1995 in the best‐fitting model?
 logisticFit(tyr, users,xlab='Time (yr)',ylab='Mobile User per Million')
+# R-squared =  0.99785
 
-# Using the best‐fitting model, predict the number of mobile users (in millions) in Brazil in 2025. 
+# Using the best-fitting model, predict the number of mobile users (in millions) in Brazil in 2025. 
 logisticFitPred(tyr, users,xlab='Time (yr)',ylab='Mobile User per Million', 2025-1995)
+# 345.427
 
 # Q2
 
-# rate of change in flu cases from April 30 to May 1
-110/257
-
-# growth rate for the flu, according to the exponential model? 
-1.46 - 1
-
-# Predict the number of cases of flu on Day 14 (when "Day" is equal to 14), using the exponential model.
 Day <- c(0:9)
 Flu <- c(73, 105, 137, 257, 367, 658, 898, 1085, 1490, 1893)
+
+# rate of change in flu cases from April 30 to May 1
+(367 - 257)/257
+
+# growth rate for the flu, according to the exponential model? 
+expFit(Day, Flu, xlab='Days', ylab='Flue Cases')
+1.46 - 1   # b =  1.46096
+
+# Predict the number of cases of flu on Day 14 (when "Day" is equal to 14), using the exponential model.
 expFitPred(Day, Flu,xlab='Days',ylab='Flu Cases', 14)
+# 15466.356
 logisticFitPred(Day, Flu,xlab='Days',ylab='Flu Cases', 14)
+# 3036.525
+
+# Use the provided approximate model constants in the table, not to calculate the precise model constants using the raw data.
+a <- 76.64
+b <- 1.46
+t <- 14
+a*b^t
+# [1] 15324.82
+
+# Using the logistic model, predict the total number of flu cases on Day 14.
+C <- 3273.31
+a <- 43.59
+b <- 1.57
+C/( 1 + a*b^(-t) )
+# [1] 3034.078
+
+# The actual number of flu cases on Day 14 was 4,379. Find the residual of the exponential model prediction.
+4379 - 15325 
+
+# What is the residual of the logistic model prediction for Day 14?
+4379 - 3034
+
+# Q3
+
+# how many wolves were being added to the park each year?
+
+yr <- c(1,3)
+Nw <- c(25,45)
+linFit(yr, Nw, xlab='Yr', ylab='Numbers')
+(45-25)/(3-1)
+# Slope =  10
+
+# According to their linear model, what was the size of the original wolf population when the project began?
+25 - 10
+# Intercept =  15
+
+# Fit an exponential model to this data. What is the growth factor for his model?
+expFit(yr, Nw, xlab='Yr', ylab='Numbers')
+# b =  1.34164   growth factor = 1 +  growth rate
+
+# What is the annual growth rate of these wolves each year, according to this model?
+1.34164 - 1
+
+# Assuming exponential growth, find the initial number of wolves when the project began. 
+18.6339
+
+# By 2002, there were 147 wolves in Yellowstone Park. Which model was determined to fit the data better?
+linFitPred(yr, Nw, xlab='Yr', ylab='Numbers', 2002-1995)
+# Predicted value 85
+
+# Residual of linFit
+147 - 85
+
+expFitPred(yr, Nw, xlab='Yr', ylab='Numbers', 2002-1995)
+# Predicted value 145.8
+
+# Residual of expFit
+147 - 145.8
+
+yr <- c(1,3,7)
+Nw <- c(25,45,147)
+linFit(yr, Nw, xlab='Yr', ylab='Numbers')
+# R-squared =  0.96793
+
+expFit(yr, Nw, xlab='Yr', ylab='Numbers')
+# R-squared =  1
+
+# Using the best fitting model, how many years must pass before there are more than 325 wolves in Yellowstone? 
+a <- 18.58487
+b <- 1.34361
+t <- log10(325/a)/log10(b)  # a*b^t
+# [1] 9.6881
+
+expFitPred(yr, Nw, xlab='Yr', ylab='Numbers', 10)
+# Predicted : 356.352
+
+expFitPred(yr, Nw, xlab='Yr', ylab='Numbers', 9)
+# Predicted : 265.22
+
+# Q4
+
+C <- 2000
+a <- 152.10
+b <- 2.17
+
+# What was the size of the hedgehog population when the growth rate began to slow down?
+C/2
+
+# How many years had passed when the population growth rate began to slow down?
+log10(a)/log10(b)
+
+# The hedgehogs were released in South Austin in 2001. How many hedgehogs were living in South Austin by 2010, according to
+# the model?
+t <- 2010-2001
+C/(1 + a*b^(-t))
+# [1] 1750.458
+
